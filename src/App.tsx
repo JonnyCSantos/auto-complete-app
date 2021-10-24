@@ -1,12 +1,8 @@
 import './App.css';
-import api from './Service/api'
 import Search from './components/Search/Search'
 
 function App() {
-  api.map(city => {
-    console.log("city", city.name)
-    return null
-  })
+  
   
   return (
     <div className="App">
