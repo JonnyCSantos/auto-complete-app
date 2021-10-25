@@ -1,4 +1,3 @@
-import { stringify } from 'querystring'
 import React, {useState, useEffect} from 'react'
 import api from '../../Service/api'
 import './Search.css'
