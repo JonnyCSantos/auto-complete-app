@@ -1,3 +1,4 @@
+import { stringify } from 'querystring'
 import React, {useState, useEffect} from 'react'
 import api from '../../Service/api'
 import './Search.css'
@@ -5,11 +6,26 @@ import './Search.css'
 const Search: React.FC = () => {
     const [search, setSearch] = useState('')
     const [results, setResults] = useState([])
-    const [visible, setVisible] = useState(false)
-
+    const [selectedCity, setSelectedCity] = useState('')
+    const [autoCompleteVisible, setAutoCompleteVisible] = useState(false)
+    const [cityVisible, setCityVisible] = useState(false)
     
     function handleChange (e:any) {
         setSearch(e)
+    }
+
+    function handleSubmit (e:any) {
+        // e.preventDefault()
+
+        // console.log("e.", e.target[0].value)
+        // setSearch(e.target[0].value)
+        // setSelectedCity(e.target[0].value)
+    }
+
+    function handleClick(result:string) {
+        setSelectedCity(result)
+        setAutoCompleteVisible(false)
+        setCityVisible(true)
     }
     
     useEffect(() => {
@@ -19,24 +35,31 @@ const Search: React.FC = () => {
             return null
         })
         setResults(resultsArray)
-        search === '' ? setVisible(false) : setVisible(true)
+        search === '' ? setAutoCompleteVisible(false) : setAutoCompleteVisible(true)
     }, [search] )
     
     return (
         <div className="search"> 
             <div className="search__wrapper">
-                <div className="search__form">
+                <form className="search__form" onSubmit={e => handleSubmit(e)}>
                     <label htmlFor="search-input">Seach: </label>
                     <input type="text" name="" id="search-input" className="search__input" onChange={(e) => handleChange(e.target.value)}/>
-                </div>
+                    <button type="submit">Search for city</button>
+                </form>
                 {
-                    visible &&
+                    autoCompleteVisible &&
                     <div className="search__results">
                         <ul>
                         {results.map((result, index) => {
-                            return <li key={index}>{result}</li>
+                            return <li key={index} onClick={e => handleClick(result)}>{result}</li>
                         })}
                         </ul>
+                    </div>
+                }
+                {
+                    cityVisible && 
+                    <div className="city">
+                        <p><strong>Selected city: </strong>{selectedCity}</p>
                     </div>
                 }
             </div>
